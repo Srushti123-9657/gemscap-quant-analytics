@@ -1,0 +1,7 @@
+flask
+flask-cors
+websocket-client
+pandas
+numpy
+statsmodels
+plotly
