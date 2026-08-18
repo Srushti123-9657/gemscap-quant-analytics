@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<p>Hello Guys</p>
+
 <head>
     <title>Gemscap Quant Dashboard</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -11,30 +13,30 @@
             margin: 20px;
             background-color: #f9fafb;
         }
-
+        
         h2 {
             font-size: 30px;
             margin-bottom: 5px;
         }
-
+        
         p {
             font-size: 16px;
             color: #444;
         }
-
+        
         #hedge {
             margin-top: 15px;
             font-size: 20px;
             color: #0f172a;
         }
-
+        
         #alert {
             margin-top: 10px;
             font-size: 18px;
             font-weight: bold;
             color: red;
         }
-
+        
         .chart-box {
             border: 2px solid #d1d5db;
             border-radius: 8px;
@@ -47,67 +49,76 @@
 
 <body>
 
-<h2>Real-Time Quant Analytics Dashboard</h2>
-<p>BTC – ETH Pair Trading (Live Binance Futures Data)</p>
+    <h2>Real-Time Quant Analytics Dashboard</h2>
+    <p>BTC – ETH Pair Trading (Live Binance Futures Data)</p>
 
-<h3 id="hedge">Hedge Ratio:</h3>
-<h3 id="alert"></h3>
+    <h3 id="hedge">Hedge Ratio:</h3>
+    <h3 id="alert"></h3>
 
-<div class="chart-box">
-    <div id="spread" style="width:100%;height:400px;"></div>
-</div>
+    <div class="chart-box">
+        <div id="spread" style="width:100%;height:400px;"></div>
+    </div>
 
-<div class="chart-box">
-    <div id="zscore" style="width:100%;height:400px;"></div>
-</div>
+    <div class="chart-box">
+        <div id="zscore" style="width:100%;height:400px;"></div>
+    </div>
 
-<script>
-function loadData() {
-    fetch("/data")
-        .then(response => response.json())
-        .then(data => {
-            if (!data.spread) return;
+    <script>
+        function loadData() {
+            fetch("/data")
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.spread) return;
 
-            // Hedge Ratio
-            document.getElementById("hedge").innerText =
-                "Hedge Ratio: " + data.hedge_ratio;
+                    // Hedge Ratio
+                    document.getElementById("hedge").innerText =
+                        "Hedge Ratio: " + data.hedge_ratio;
 
-            // Alert
-            if (data.alert) {
-                document.getElementById("alert").innerText = data.alert;
-            } else {
-                document.getElementById("alert").innerText = "";
-            }
+                    // Alert
+                    if (data.alert) {
+                        document.getElementById("alert").innerText = data.alert;
+                    } else {
+                        document.getElementById("alert").innerText = "";
+                    }
 
-            // Spread Chart
-            Plotly.newPlot("spread", [{
-                y: data.spread,
-                type: "scatter",
-                mode: "lines",
-                name: "Spread",
-                line: { color: "#2563eb" }
-            }], {
-                title: "Spread",
-                margin: { t: 40 }
-            });
+                    // Spread Chart
+                    Plotly.newPlot("spread", [{
+                        y: data.spread,
+                        type: "scatter",
+                        mode: "lines",
+                        name: "Spread",
+                        line: {
+                            color: "#2563eb"
+                        }
+                    }], {
+                        title: "Spread",
+                        margin: {
+                            t: 40
+                        }
+                    });
 
-            // Z-Score Chart (RED LINE)
-            Plotly.newPlot("zscore", [{
-                y: data.zscore,
-                type: "scatter",
-                mode: "lines",
-                name: "Z-Score",
-                line: { color: "red" }
-            }], {
-                title: "Z-Score",
-                margin: { t: 40 }
-            });
-        });
-}
+                    // Z-Score Chart (RED LINE)
+                    Plotly.newPlot("zscore", [{
+                        y: data.zscore,
+                        type: "scatter",
+                        mode: "lines",
+                        name: "Z-Score",
+                        line: {
+                            color: "red"
+                        }
+                    }], {
+                        title: "Z-Score",
+                        margin: {
+                            t: 40
+                        }
+                    });
+                });
+        }
 
-// Refresh every 5 seconds
-setInterval(loadData, 5000);
-</script>
+        // Refresh every 5 seconds
+        setInterval(loadData, 5000);
+    </script>
 
 </body>
+
 </html>
